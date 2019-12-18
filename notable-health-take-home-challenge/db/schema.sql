@@ -3,8 +3,6 @@ DROP DATABASE notable;
 CREATE DATABASE notable;
 
 \c notable;
-
-DROP TABLE IF EXISTS doctors;
 		
 CREATE TABLE doctors (
   uid           SERIAL PRIMARY KEY,
@@ -13,7 +11,6 @@ CREATE TABLE doctors (
   email         VARCHAR NOT NULL
 );
 
-DROP TABLE IF EXISTS patients;
 		
 CREATE TABLE patients (
   uid           SERIAL PRIMARY KEY,
@@ -22,20 +19,16 @@ CREATE TABLE patients (
   email         VARCHAR NOT NULL
 );
 
-DROP TABLE IF EXISTS appointments;
 		
 CREATE TABLE appointments (
   uid           SERIAL PRIMARY KEY,
-  doctor        INTEGER NOT NULL,
-  patient       INTEGER NOT NULL,
-  date          VARCHAR NOT NULL,
+  doctorID      INT REFERENCES doctors(uid),
+  patientID     INT REFERENCES patients(uid),
+  date          DATE NOT NULL,
   time          VARCHAR NOT NULL,
   kind          VARCHAR NOT NULL
+
 );
-
-
-ALTER TABLE appointments ADD FOREIGN KEY (doctor) REFERENCES doctors (id);
-ALTER TABLE appointments ADD FOREIGN KEY (patient) REFERENCES patients (id);
 
 INSERT INTO doctors(firstname, lastname, email) VALUES('Jim', 'Halpert', 'halpert@notablehealth.com');
 INSERT INTO doctors(firstname, lastname, email) VALUES('Dwight', 'Schrute', 'schrute@notablehealth.com');
@@ -49,13 +42,13 @@ INSERT INTO patients(firstname, lastname, email) VALUES('Toby', 'Flenderson', 'f
 INSERT INTO patients(firstname, lastname, email) VALUES('Kevin', 'Malone', 'malone@office.com');
 INSERT INTO patients(firstname, lastname, email) VALUES('Phyllis', 'Vance', 'vance@office.com');
 
-INSERT INTO appointments(doctor, patient, date, time, kind) VALUES(2, 2, '2019-12-18', '10:00AM', 'Follow-up');
-INSERT INTO appointments(doctor, patient, date, time, kind) VALUES(5, 2, '2019-12-18', '9:00AM', 'New Patient');
-INSERT INTO appointments(doctor, patient, date, time, kind) VALUES(4, 1, '2019-12-18', '9:30AM', 'New Patient');
-INSERT INTO appointments(doctor, patient, date, time, kind) VALUES(2, 3, '2019-12-19', '11:00AM', 'Follow-up');
-INSERT INTO appointments(doctor, patient, date, time, kind) VALUES(3, 5, '2019-12-18', '12:30PM', 'New Patient');
-INSERT INTO appointments(doctor, patient, date, time, kind) VALUES(1, 4, '2019-12-20', '10:30AM', 'New Patient');
-INSERT INTO appointments(doctor, patient, date, time, kind) VALUES(3, 1, '2019-12-21', '2:30PM', 'Follow-up');
-INSERT INTO appointments(doctor, patient, date, time, kind) VALUES(3, 5, '2019-12-21', '2:30PM', 'Follow-up');
-INSERT INTO appointments(doctor, patient, date, time, kind) VALUES(3, 5, '2019-12-21', '2:30PM', 'Follow-up');
+INSERT INTO appointments(doctorID, patientID, date, time, kind) VALUES(2, 2, '2019-12-18', '10:00AM', 'Follow-up');
+INSERT INTO appointments(doctorID, patientID, date, time, kind) VALUES(5, 2, '2019-12-18', '9:00AM', 'New Patient');
+INSERT INTO appointments(doctorID, patientID, date, time, kind) VALUES(4, 1, '2019-12-18', '9:30AM', 'New Patient');
+INSERT INTO appointments(doctorID, patientID, date, time, kind) VALUES(2, 3, '2019-12-19', '11:00AM', 'Follow-up');
+INSERT INTO appointments(doctorID, patientID, date, time, kind) VALUES(3, 5, '2019-12-18', '12:30PM', 'New Patient');
+INSERT INTO appointments(doctorID, patientID, date, time, kind) VALUES(1, 4, '2019-12-20', '10:30AM', 'New Patient');
+INSERT INTO appointments(doctorID, patientID, date, time, kind) VALUES(3, 1, '2019-12-21', '2:30PM', 'Follow-up');
+INSERT INTO appointments(doctorID, patientID, date, time, kind) VALUES(3, 5, '2019-12-21', '2:30PM', 'Follow-up');
+INSERT INTO appointments(doctorID, patientID, date, time, kind) VALUES(3, 5, '2019-12-21', '2:30PM', 'Follow-up');
 
