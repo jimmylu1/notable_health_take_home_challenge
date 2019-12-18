@@ -45,13 +45,8 @@ app.post("/appointments/:doctorID/:date", (req, res, next) => {
     params: { doctorID, date },
     body: { time, kind, patientID }
   } = req;
-  const validMinutes = ["00", "15", "30", "45"];
-  const validTime = validMinutes.includes(time.split(":")[1].slice(0, 2));
 
-  if (!validTime) {
-    res.status(400);
-    return "Please choose a different time for an appointment.";
-  }
+  //need to schedule for valid time
 
   db.query(
     "INSERT INTO appointments(doctorID, patientID, date, time, kind) SELECT $1, $2, $3, $4, $5 WHERE (SELECT COUNT(*) FROM appointments WHERE doctorID = $1 AND date = $3 AND time = $4) < 3 ",
